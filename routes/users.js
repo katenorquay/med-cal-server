@@ -8,7 +8,7 @@ const passport = require('../auth/passportSetup')
 const { successMessage, errorMessage } = require('../db/responses')
 const {getAllUsers, getUserByUsername, signupNewUser} = require('../db/users')
 const { makeEmojiObjs } = require('./constants')
-const { generateEmojis } = require('../db/emojis')
+const { generateEmojis, getEmojiByUserId } = require('../db/emojis')
 
 const ensureAuthenticated = (req, res) => {
   if (req.isAuthenticated()) {
@@ -43,12 +43,16 @@ router.post('/signup', (req, res) => {
           })
               .then(user => makeEmojiObjs(user[0], function(emojis) {
                   generateEmojis(emojis)
+                  .then(user => getEmojiByUserId(emojis[0].userId)
                   .then(emojis => res.json({emojis}))
+                )
                 }))
               })
             }
         })
-    .catch(err => console.log(err))
+    .catch(err => res.status(500)
+      .json(errorMessage('there was an error creating this user'))
+    )
 })
 
 //POST to login
