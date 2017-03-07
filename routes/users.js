@@ -10,18 +10,6 @@ const {getAllUsers, getUserByUsername, signupNewUser} = require('../db/users')
 const { makeEmojiObjs } = require('./constants')
 const { generateEmojis, getEmojiByUserId } = require('../db/emojis')
 
-const ensureAuthenticated = (req, res) => {
-  if (req.isAuthenticated()) {
-    return next()
-  }
-  return res.json({
-    "error":
-    {
-      "message": "auth failed"
-    }
-  })
-}
-
 //Get all Users (For Testing)
 router.get('/', (req, res) => {
   getAllUsers()
