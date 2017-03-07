@@ -1,8 +1,21 @@
+const Knex = require('knex')
+const knexConfig = require('../knexfile')[process.env.NODE_ENV || 'development']
+const knex = Knex(knexConfig)
 
-getEmojis
+const getEmojis = () => knex('emojis')
 
-editEmojiById
+const getEmojiById = (id) => knex('emojis').where('id', id)
 
-getEmojiByUserId
+const editEmojiById = (id, coords) => knex('emojis').where('id', id).update(coords)
 
-getEmojiById
+const getEmojiByUserId = (userId) => knex('emojis').where('userId', userId)
+
+const generateEmojis = (emojis) => knex('emojis').insert(emojis)
+
+module.exports = {
+  getEmojis,
+  getEmojiById,
+  editEmojiById,
+  getEmojiByUserId,
+  generateEmojis
+}
