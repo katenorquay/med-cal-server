@@ -8,8 +8,11 @@ const signupNewUser = (userInfo) => knex('users').insert(userInfo)
 
 const getUserByUsername = (username) => knex('users').where('username', username)
 
+const getUserById = (id) => knex('users').where('id', id)
+
 module.exports = {
   getAllUsers,
   signupNewUser,
-  getUserByUsername
+  getUserByUsername,
+  getUserById
 }

@@ -1,8 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const { successMessage, errorMessage } = require('../db/responses')
+
+const Passport = require('passport')
 const hasher = require('../auth/hasher')
-const passport = require('passport')
+const passport = require('../auth/passportSetup')
+
+const { successMessage, errorMessage } = require('../db/responses')
 const {getAllUsers, getUserByUsername, signupNewUser} = require('../db/users')
 const { makeEmojiObjs } = require('./constants')
 const { generateEmojis } = require('../db/emojis')
@@ -19,13 +22,14 @@ const ensureAuthenticated = (req, res) => {
   })
 }
 
+//Get all Users (For Testing)
 router.get('/', (req, res) => {
   getAllUsers()
   .then(users => res.json({users}))
   .catch(err => console.log(err))
 })
 
-// POST to create a new user
+// POST to create a new user, and generate intial emojis
 router.post('/signup', (req, res) => {
   getUserByUsername(req.body.username)
     .then(user => {
@@ -39,9 +43,7 @@ router.post('/signup', (req, res) => {
           })
               .then(user => makeEmojiObjs(user[0], function(emojis) {
                   generateEmojis(emojis)
-                  .then(emojis => res.status(201)
-                    .json(successMessage('User account created'))
-                  )
+                  .then(emojis => res.json({emojis}))
                 }))
               })
             }
@@ -51,6 +53,7 @@ router.post('/signup', (req, res) => {
 
 //POST to login
 router.post('/login', passport.authenticate('local'), (req, res) => {
+  console.log(req.body.username)
   getUserByUsername(req.body.username)
     .then(user => res.json({ user: user[0]}))
     .catch(error => res.json(errorMessage('Error retrieving user from db')))

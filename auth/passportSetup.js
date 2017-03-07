@@ -26,7 +26,7 @@ passport.use(new Strategy((username, password, done) => {
 }))
 
 passport.serializeUser((user, done) => {
-  done(null, user.userId)
+  done(null, user.id)
 })
 
 passport.deserializeUser((id, done) => {

@@ -3,6 +3,7 @@ const router = express.Router()
 const { successMessage, errorMessage } = require('../db/responses')
 const {getEmojis, getEmojiByUserId, editEmojiById, getEmojiById} = require('../db/emojis')
 
+//Get all Emojis (For Testing)
 router.get('/', (req, res) => {
   getEmojis()
   .then(emojis => res.json({emojis}))
@@ -21,7 +22,7 @@ router.get('/:id', (req, res) => {
   )
 })
 
-//Update Emojis by id
+//Update Emojis by id to
 router.post('/edit/:id', (req, res) => {
     var newCoords = {
       x: req.body.x,
@@ -36,5 +37,7 @@ router.post('/edit/:id', (req, res) => {
         .json(errorMessage('Error updating emoji coords'))
     )
   })
+
+
 
 module.exports = router

@@ -37,4 +37,4 @@ function makeEmojiObjs(userId, callback) {
     }])
 }
 
-  module.exports = makeEmojiObjs
+module.exports = {makeEmojiObjs}
