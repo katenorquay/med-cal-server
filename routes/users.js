@@ -4,7 +4,7 @@ const { successMessage, errorMessage } = require('../db/responses')
 const hasher = require('../auth/hasher')
 const passport = require('passport')
 const {getAllUsers, getUserByUsername, signupNewUser} = require('../db/users')
-// const { makeEmojiObjs } = require('./constants')
+const { makeEmojiObjs } = require('./constants')
 const { generateEmojis } = require('../db/emojis')
 
 const ensureAuthenticated = (req, res) => {
@@ -37,7 +37,7 @@ router.post('/signup', (req, res) => {
             username: req.body.username,
             password: hashedPassword
           })
-              .then(user => makeEmojiObjs(user, function(emojis) {
+              .then(user => makeEmojiObjs(user[0], function(emojis) {
                   generateEmojis(emojis)
                   .then(emojis => res.status(201)
                     .json(successMessage('User account created'))
@@ -48,45 +48,6 @@ router.post('/signup', (req, res) => {
         })
     .catch(err => console.log(err))
 })
-
-function makeEmojiObjs(userId, callback) {
-  callback([{
-      userId: userId,
-      x: 0,
-      y: 0,
-      icon: '♗'
-    },
-    {
-      userId: userId,
-      x: 0,
-      y: 1,
-      icon: '♔'
-    },
-    {
-      userId: userId,
-      x: 0,
-      y: 2,
-      icon: '♛'
-    },
-    {
-      userId: userId,
-      x: 0,
-      y: 3,
-      icon: '♞'
-    },
-    {
-      userId: userId,
-      x: 0,
-      y: 4,
-      icon: '♜'
-    },
-    {
-      userId: userId,
-      x: 0,
-      y: 5,
-      icon: '♘'
-    }])
-}
 
 //POST to login
 router.post('/login', passport.authenticate('local'), (req, res) => {

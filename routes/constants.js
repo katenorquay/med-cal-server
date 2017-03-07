@@ -1,6 +1,5 @@
-
-function makeEmojiObjs(userId) {
-  return [{
+function makeEmojiObjs(userId, callback) {
+  callback([{
       userId: userId,
       x: 0,
       y: 0,
@@ -35,7 +34,7 @@ function makeEmojiObjs(userId) {
       x: 0,
       y: 5,
       icon: '♘'
-    }]
+    }])
 }
 
   module.exports = makeEmojiObjs
