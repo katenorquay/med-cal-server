@@ -29,8 +29,7 @@ router.post('/signup', (req, res) => {
             username: req.body.username,
             password: hashedPassword
           })
-          .then(response => res.status(201)
-            .json(successMessage('User account created'))
+          .then(user => res.json({user: user[0]})
           )
         })
       }

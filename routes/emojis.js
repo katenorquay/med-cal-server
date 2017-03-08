@@ -36,7 +36,7 @@ router.get('/:id', ensureAuthenticated, (req, res) => {
     )
 })
 
-//Update Emojis by id to
+//Update Emojis by id
 router.post('/edit/:id', ensureAuthenticated, (req, res) => {
   var newCoords = {
     x: req.body.x,
@@ -52,21 +52,19 @@ router.post('/edit/:id', ensureAuthenticated, (req, res) => {
     )
 })
 
-//Generate Emojis
+//Post to generate emojis in intial positions
 router.post('/', ensureAuthenticated, (req, res) => {
-  makeEmojiObjs(req.body.id, function(emojis) {
+  makeEmojiObjs(req.user.id, function(emojis) {
     generateEmojis(emojis)
-    .then(user => getEmojiByUserId(req.body.id)
+    .then(user => getEmojiByUserId(req.user.id)
     .then(emojis => res.json({emojis}))
     )
-    .catch(error => res.status(500)
-    .json(errorMessage('Error generating emojis'))
-  )
+    .catch(error => console.log(error))
   })
 })
 
 
-//Post to delete the moved emojis from db and replace with initial position emojis
+//Post to delete the moved emojis from the db
 router.post('/reset', ensureAuthenticated, (req, res) => {
   deleteEmojisByUserId(req.body.id)
   .then(response => res.status(201)
@@ -75,7 +73,7 @@ router.post('/reset', ensureAuthenticated, (req, res) => {
     .catch(error => res.status(500)
       .json(errorMessage('Error deleting emojis'))
     )
-  })
+})
 
 
 
