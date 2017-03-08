@@ -29,15 +29,12 @@ router.post('/signup', (req, res) => {
             username: req.body.username,
             password: hashedPassword
           })
-              .then(user => makeEmojiObjs(user[0], function(emojis) {
-                  generateEmojis(emojis)
-                  .then(user => getEmojiByUserId(emojis[0].userId)
-                  .then(emojis => res.json({emojis}))
-                )
-                }))
-              })
-            }
+          .then(response => res.status(201)
+            .json(successMessage('User account created'))
+          )
         })
+      }
+    })
     .catch(err => res.status(500)
       .json(errorMessage('there was an error creating this user'))
     )
