@@ -14,11 +14,14 @@ const generateEmojis = (emojis) => knex('emojis').insert(emojis)
 
 const deleteEmojisByUserId = (userId) => knex('emojis').where('userId', userId).del()
 
+const postNewEmoji = (emoji) => knex('emojis').insert(emoji)
+
 module.exports = {
   getEmojis,
   getEmojiById,
   editEmojiById,
   getEmojiByUserId,
   generateEmojis,
-  deleteEmojisByUserId
+  deleteEmojisByUserId,
+  postNewEmoji
 }
