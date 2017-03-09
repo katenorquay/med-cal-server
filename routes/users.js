@@ -41,7 +41,7 @@ router.post('/signup', (req, res) => {
 
 //POST to login
 router.post('/login', passport.authenticate('local'), (req, res) => {
-  console.log(req.body.username)
+  console.log('logging in', req.body.username)
   getUserByUsername(req.body.username)
     .then(user => res.json({ user: user[0]}))
     .catch(error => res.json(errorMessage('Error retrieving user from db')))
